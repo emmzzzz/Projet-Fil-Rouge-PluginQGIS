@@ -1,0 +1,7 @@
+[general]
+name=Isochrones Géoplateforme
+qgisMinimumVersion=3.22
+description=Calcul d'isochrones via la Géoplateforme 
+version=0.1
+author=Emma Ekanayaka
+about=Appelle le service de calcul d'isochrones de la Géoplateforme et affiche le résultat dans QGIS.
