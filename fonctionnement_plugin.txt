@@ -1,0 +1,45 @@
+Fonctionnement du plugin et utilisation de l'IA
+
+Déroulement du calcul
+
+1) Ouverture de la fenêtre : le plugin télécharge le 'getcapabilities' du
+   service pour connaître les choix possibles (ressources, profils, directions,
+   unités, contraintes). Si le service ne répond pas, des valeurs par défaut
+   sont utilisées et un avertissement est affiché.
+2) Saisie des paramètres : longitude, latitude, ressource, type de calcul (temps ou
+   distance), profil, direction, unité, valeur maximale et contraintes
+   (éviter autoroutes, tunnels, ponts). Les listes se mettent à jour quand on
+   change de ressource ou de type de calcul.
+3) Validation : l'objet 'Parametres' vérifie les valeurs et construit les
+   paramètres de la requête.
+4) Appel du service : 'Geoplateforme' envoie une requête GET au service
+   d'isochrone et renvoie une réponse JSON.
+5) Affichage des résultats : 'Resultat' transforme la réponse en GeoJSON, l'écrit dans un fichier temporaire et l'ajoute au projet QGIS comme couche.
+
+On peut avoir des erreurs du types : paramètres invalides, réseau coupé, erreur du service, réponse illisible qui sont affichées dans la console Qgis.
+
+Organisation du code
+
+'__init__.py' : Point d'entrée demandé par QGIS avec la classe 'classFactory'.
+'plugin.py' : Intégration dans QGIS du plugin en mettant un bouton dans la barre d'outils et gérer l'ouverture de la fenêtre.
+'interface.py' : Fenêtre du plugin.
+'parametres.py' : Gérer les formats des paramètres et validation de la requête.
+'capacities.py' : Lecture des choix possibles dans le 'getcapabilities' 
+'geoplateforme.py' : Appel du service de calcul 
+'resultats.py' : Transformation de la réponse en couche QGIS
+
+Il y a 3 diagrammes d'analyse (cas d'utilisation, classes, séquence) dans le
+dossier.Le diagramme de séquence ne montre pas la mise à jour des listes quand on change de ressource.
+
+Limites
+
+- Dans les paramètres en option le format 'geometryFormat' (GeoJSON) et 'crs' (EPSG:4326) sont fixés et gardé par défaut.
+- Seules les contraintes sur le type de voie sont proposées.
+- L'appel au service bloque l'interface QGIS pendant le calcul.
+
+Utilisation de l'IA (Claude) 
+
+Utiliser pour : 
+- Lecture du 'getcapabilities' : écriture de `capacities.py` de façon globale et l'adapter à la structure de mon fichier.
+- Interface : listes déroulantes pour les différentes ressource de 'getcapabilities', gestion des unités et des contraintes.
+
